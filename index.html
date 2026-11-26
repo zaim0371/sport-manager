@@ -4,8 +4,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b2e25">
 <title>Sport Manager</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f3f5f9;--line:#e3e8f0;--ink:#1a2233;--mut:#8b95a7;--navy:#0f1730;--blue:#2563eb;--green:#16c254;--red:#ef4444}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -476,6 +477,188 @@ nav button:active svg{transform:scale(.88)}
 .ck{width:calc(52*var(--u));height:calc(52*var(--u));border-radius:50%;background:#2563eb;color:#fff;display:grid;place-items:center;font-style:normal;font-size:calc(30*var(--u));margin-left:auto;flex:none}
 .ck.off{background:#fff;border:calc(3*var(--u)) solid #cbd5e1;color:transparent}
 .lusheet .lf .btn{height:calc(104*var(--u));font-size:calc(38*var(--u));border-radius:calc(26*var(--u))}
+/* redesain: tenang & lega */
+:root{--bg:#f4f5f8;--line:#e5e8ee;--ink:#1c2230;--mut:#666f80;--accent:#3a5bd9;--soft:#e8edfc;--go:#1f9d63;--navy:#17203a}
+html,body,button,input,#app{font-family:Figtree,Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+input.nm{font-family:inherit;font-weight:600}
+html,body{background:#e9ebf0}
+#app{max-width:480px;background:var(--bg);box-shadow:0 0 0 1px var(--line)}
+#app b,#app h2,#app .cname,#app .chip,#app nav button,#app .pgtitle,#app .h2x,#app .h2{font-weight:650}
+#app .pgtitle{font-size:calc(46*var(--u));font-weight:700}
+#app .h2,#app .h2x{text-transform:none;letter-spacing:0;font-size:calc(34*var(--u));color:var(--ink);margin:calc(40*var(--u)) 0 calc(16*var(--u))}
+.top{background:var(--bg);backdrop-filter:none;border-bottom:1px solid var(--line);padding:calc(env(safe-area-inset-top,0px) + 28*var(--u)) calc(32*var(--u)) calc(24*var(--u))}
+.pills{grid-template-columns:1fr 1fr auto auto;grid-template-rows:auto auto;gap:calc(20*var(--u)) calc(16*var(--u))}
+.sqs{display:contents}
+.pills>.pill:nth-of-type(1){grid-column:1;grid-row:1}.pills>.pill:nth-of-type(3){grid-column:2;grid-row:1}
+#btnProfile{grid-column:3;grid-row:1}#btnClub{grid-column:4;grid-row:1}
+#app .pill{height:calc(100*var(--u));border:1px solid var(--line);background:#fff;box-shadow:none;border-radius:calc(30*var(--u))}
+#app .pill span{font-size:calc(38*var(--u));font-weight:650}
+#app .pill svg{width:calc(52*var(--u));height:calc(52*var(--u))}
+#app .sq{width:calc(100*var(--u));height:calc(100*var(--u));border:1px solid var(--line);background:#fff;border-radius:calc(30*var(--u));box-shadow:none;font-size:calc(46*var(--u))}
+#app #btnProfile{border:1px solid var(--line)}
+.pills .income{grid-column:1/3;grid-row:2;flex-direction:row;align-items:center;justify-content:flex-start;gap:calc(16*var(--u))}
+.income small{font-size:calc(29*var(--u));color:var(--mut)}
+.income b{font-size:calc(46*var(--u));background:none;color:var(--go);-webkit-text-fill-color:currentColor}
+#app .dem{margin:0;box-shadow:none;border-radius:999px;font-size:calc(26*var(--u));padding:calc(8*var(--u)) calc(24*var(--u));background:#e6e9f0;color:#4b566b}
+#app .dem.hot{background:#ffe9d6;color:#b4500a}#app .dem.cold{background:#e0ecff;color:#1d4fb8}.dem:empty{display:none}
+#app .sportbtn{grid-column:3/5;grid-row:2;justify-self:stretch;width:auto;height:calc(100*var(--u));margin:0;padding:0 calc(28*var(--u));border-radius:calc(30*var(--u));background:var(--soft);color:var(--accent);box-shadow:none;font-size:calc(30*var(--u));font-weight:700}
+#app .sportbtn svg{width:calc(46*var(--u));height:calc(46*var(--u))}
+main{margin:0;padding:calc(30*var(--u)) calc(32*var(--u)) calc(44*var(--u));border-top:0}
+nav{height:auto;padding:calc(10*var(--u)) calc(12*var(--u)) calc(10*var(--u) + env(safe-area-inset-bottom,0px));background:#fff;border-top:1px solid var(--line);box-shadow:none}
+nav button{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:calc(6*var(--u));height:calc(130*var(--u));font-size:calc(25*var(--u));color:#7b8496}
+nav button svg{width:calc(56*var(--u));height:calc(56*var(--u))}
+nav button.on{color:var(--accent)}
+nav button.on::before{inset:0 calc(8*var(--u));background:var(--soft);box-shadow:none;border-radius:calc(28*var(--u))}
+nav button.on svg{animation:none;transform:none}
+.nd{top:calc(10*var(--u));left:calc(50% + 24*var(--u));animation:none}
+#toast{bottom:calc(200*var(--u) + env(safe-area-inset-bottom,0px));background:var(--navy);box-shadow:none}
+#app .btn{border-radius:calc(24*var(--u));box-shadow:none!important;background:var(--soft);color:var(--accent);font-weight:650;transition:background .15s}
+#app .btn:active{transform:none;background:#d6dffa}
+#app .btn .p{background:rgba(58,91,217,.12);color:inherit}
+#app .btn.green{background:var(--go);color:#fff}#app .btn.green .p{background:rgba(255,255,255,.2)}
+#app .btn.gold{background:#fdf0d5;color:#8a5a00}#app .btn.purple{background:#efe9fd;color:#6a3fc4}
+#app .btn.grey{background:var(--soft);color:var(--accent)}
+#app .btn.dis,#app .btn:disabled{background:#eceef3;color:#9aa2b1;opacity:1}#app .btn.dis .p,#app .btn:disabled .p{background:#e0e3ea;color:#9aa2b1}
+#app .backbtn,#app .pbk{background:none;border:0;color:var(--accent);justify-content:flex-start;width:auto;height:auto;min-height:0;padding:0;margin-bottom:calc(24*var(--u));font-size:calc(32*var(--u));font-weight:650}
+#app .playbig{height:calc(124*var(--u));font-size:calc(42*var(--u));border-radius:calc(32*var(--u));background:var(--go);color:#fff}
+#app .playbig.gold{background:#c98200;color:#fff}
+#app .playbig:disabled{background:#eceef3;color:#9aa2b1}
+.dock{background:linear-gradient(rgba(244,245,248,0),var(--bg) 40%);padding-top:calc(20*var(--u))}
+#app .card,#app .row,#app .pc,#app .gc,#app .gymrow,#app .stat,#app .tk,#app .skr,#app .omb,#app .trt,#app .tile,#app .sched,#app .mgc,#app .pp{box-shadow:none;border:1px solid var(--line);background:#fff;transition:none}
+#app .card:active,#app .omb:active,#app .trt:active,#app .tile:active{transform:none;background:#f7f8fb}
+#app .skr{border-left:calc(10*var(--u)) solid var(--c)}
+#app .tk.on,#app .pp.on{border-color:var(--accent);background:#f3f6ff}
+#app .row,#app .pc,#app .gc{border-radius:calc(30*var(--u));padding:calc(26*var(--u));margin-bottom:calc(20*var(--u))}
+#app .row .tx b,#app .pc .pt b{font-size:calc(35*var(--u))}
+#app .row .tx span,#app .pc .pt span,#app .omb span,#app .tile span,#app .sl span,#app .card .lvl{font-size:calc(28*var(--u));line-height:1.35}
+#app .grid{grid-template-columns:1fr;gap:calc(20*var(--u))}
+#app .card{display:grid;grid-template-columns:1fr auto;grid-template-areas:"ct btn" "val btn";align-items:center;column-gap:calc(24*var(--u));row-gap:calc(12*var(--u));padding:calc(26*var(--u));border-radius:calc(32*var(--u))}
+#app .card .ct{grid-area:ct;padding:0}
+#app .card .val{grid-area:val;justify-content:flex-start;margin:0;padding:0;height:auto;border:0;background:none;font-size:calc(30*var(--u));font-weight:500;color:var(--mut)}
+#app .card .btn{grid-area:btn;margin:0;width:auto;min-width:calc(250*var(--u));height:calc(100*var(--u));padding:0 calc(24*var(--u));font-size:calc(32*var(--u));justify-content:center;gap:calc(12*var(--u))}
+#app .card .btn .bl{flex:none}#app .card .btn .p{width:auto;height:auto;padding:calc(6*var(--u)) calc(14*var(--u));font-size:calc(27*var(--u))}
+#app .offmenu{grid-template-columns:1fr;gap:calc(16*var(--u))}
+#app .omb{display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:"i b c" "i s c";column-gap:calc(26*var(--u));align-items:center;padding:calc(24*var(--u)) calc(28*var(--u));border-radius:calc(30*var(--u))}
+#app .omb i{grid-area:i;margin:0}#app .omb b{grid-area:b;font-size:calc(36*var(--u))}#app .omb span{grid-area:s}
+#app .omb::after{content:"›";grid-area:c;font-size:calc(60*var(--u));color:#a3abbb;line-height:1}
+#app .chips{background:#eceff4;padding:calc(6*var(--u));border-radius:calc(22*var(--u))}
+#app .chip{font-size:calc(28*var(--u));color:#566075;transform:none;box-shadow:none}
+#app .chip.on{background:#fff;color:var(--accent);box-shadow:0 1px 2px rgba(15,23,48,.08)}
+#app .hero{background:var(--navy);box-shadow:none;border-radius:calc(40*var(--u));padding:calc(32*var(--u))}
+#app .hvs{font-size:calc(54*var(--u));font-weight:700}
+#app .hrow,#app .hsub,#app .hrv{font-size:calc(28*var(--u))}
+#app .tiles{gap:calc(20*var(--u))}
+#app .tile{border-radius:calc(30*var(--u))}
+.bar i{animation:none;background:var(--accent)}
+.sheet{border-radius:28px;box-shadow:0 16px 48px rgba(15,23,48,.22)}
+#app .opt,#app .lu{box-shadow:none;border-color:var(--line)}
+#app .opt.sel,#app .lu.on{border-color:var(--accent);background:#f3f6ff}
+#view.tabin{animation:fade .25s ease}#view.tabin *{animation:none!important}
+#mg{background:var(--bg);animation:none}#mg .mgc{animation:none}#mg .mgh h2{background:none;color:var(--ink)}
+.mgc:has(.mgt .stars){border-left:4px solid #f59e0b}
+/* ===== tema lapangan malam ===== */
+:root{--bg:#f1f6ef;--line:#dce6da;--ink:#10231c;--mut:#78897f;--navy:#0b2e25;--blue:#0e8a6a;--green:#2eb85c;--lime:#c8f542;--pitch:#0b2e25;--sh:0 1px 0 #fff inset,0 10px 24px rgba(11,46,37,.08)}
+html,body,button,input,textarea,select{font-family:Figtree,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+input.nm{font-family:Figtree,system-ui,sans-serif}
+html,body{background:radial-gradient(120% 80% at 50% 0,#14473a,#06190f)}
+#app{background:linear-gradient(180deg,#f4f8f2,#e8efe6);box-shadow:0 0 60px rgba(0,0,0,.45)}
+.top{background:linear-gradient(180deg,#0b2e25,#0f4034);border-bottom:0;backdrop-filter:none}
+.pill{background:rgba(255,255,255,.1);border:calc(3*var(--u)) solid rgba(255,255,255,.16);color:#fff;box-shadow:none}
+.pill span{color:#fff}
+.income small{color:rgba(255,255,255,.62)}
+.income b{background:linear-gradient(#efffa0,#b4ec2a);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sq{background:#f6faf4;border-color:transparent;box-shadow:0 calc(4*var(--u)) 0 rgba(0,0,0,.28)}
+#btnProfile{border:calc(4*var(--u)) solid var(--lime)}
+.sportbtn{background:var(--lime);color:var(--pitch);box-shadow:0 calc(6*var(--u)) 0 #7da31a}
+.sportbtn:active{box-shadow:none}
+.match{background:repeating-linear-gradient(90deg,rgba(255,255,255,.035) 0 calc(60*var(--u)),transparent calc(60*var(--u)) calc(120*var(--u))),radial-gradient(120% 100% at 50% 0,#1b5a46,#0a241c);box-shadow:0 14px 30px rgba(6,25,15,.38)}
+#lblL{color:var(--lime)}#lblR{color:#ff8a65}
+.mhead .tl svg{color:var(--lime)}.mhead .r svg{color:#ff8a65}
+.score{background:rgba(5,22,16,.78);border-color:rgba(200,245,66,.28)}
+.score .m{font-family:Figtree,system-ui,sans-serif;font-variant-numeric:tabular-nums;font-weight:800}
+main{border-top:0}
+#schedZone .sched{border-color:var(--line)}
+.sl span,.note,.h2{color:#55695f}
+.h2{text-transform:none;letter-spacing:0;font-size:15px;color:var(--ink)}
+.chips{background:#e2ebe0}
+.chip{color:#5f7568}
+.chip.on{color:var(--blue)}
+.card,.pc,.sched,.row,.stat,.mgc,.gc,.pp,.lu,.tk,.opt{border-color:var(--line)}
+.card,.pc,.sched,.row,.stat{box-shadow:var(--sh)}
+.card:active{box-shadow:0 1px 0 #fff inset,0 3px 8px rgba(11,46,37,.1)}
+.ico{background:linear-gradient(145deg,#f8fcf6,#e1ede0)}
+.lvl{background:#e6f1e3;color:#3f6b57}
+.val{background:#f2f8f0;border-color:var(--line)}
+.val svg{color:#6c8a7b}
+.bar{background:#dfe9dc}
+.bar i{background:linear-gradient(90deg,#0e8a6a,#a3e635,#0e8a6a);background-size:200% 100%}
+.pf{background:#dfe9dc}
+.btn{--bs:#08574a;background:linear-gradient(#17a587,#0e8a6a);box-shadow:0 3px 0 var(--bs)}
+.btn.green{--bs:#1b7f3f;background:linear-gradient(#3ccb72,#2eb85c)}
+.btn.gold{--bs:#b45309;background:linear-gradient(#fcc83a,#f59e0b)}
+.btn.purple{--bs:#5b21b6;background:linear-gradient(#8b5cf6,#7c3aed)}
+.btn.grey{--bs:#98a79e;background:#b5c2ba}
+.card .btn,#schedZone .btn{box-shadow:0 calc(6*var(--u)) 0 var(--bs)}
+.card .btn.dis{background:#d3dcd5;color:#a1afa7;box-shadow:0 calc(6*var(--u)) 0 #bcc8bf}
+.card .btn.dis .p{background:#c0cbc3;color:#9aa8a0}
+.playbig{box-shadow:0 calc(6*var(--u)) 0 var(--bs)}
+.playbig:disabled{background:#d3dcd5;color:#a1afa7;box-shadow:0 calc(6*var(--u)) 0 #bcc8bf}
+.btn:active{box-shadow:0 1px 0 var(--bs)}
+nav{background:#fff;border-top:calc(3*var(--u)) solid var(--line)}
+nav button{color:#9db0a5}
+nav button.on{color:#0b6b4d}
+nav button.on::before{background:#e8f7cf;box-shadow:0 calc(8*var(--u)) 0 #d2e9a4}
+.nd{background:#ff5a45}
+#toast{background:linear-gradient(135deg,#14473a,#07190f);border:1px solid rgba(200,245,66,.22)}
+#ov{background:rgba(4,22,15,.62);backdrop-filter:blur(3px)}
+.sheet{border-radius:28px;box-shadow:0 24px 70px rgba(0,0,0,.4)}
+.opt.sel,.lu.on,.tk.on,.pp.on{background:#e8f6ee;border-color:var(--blue)}
+.opt .big,.gc .gi{background:linear-gradient(145deg,#14473a,#0b2e25)}
+.close{background:#e8f0e6;color:#3f5a4c}
+.bigmoney,.ofv,.lu em.ok{color:#17a24f}
+.calg button.ev{background:#e4f5ea;color:#0b6b4d;border-color:#bfe3cc}
+.calg button.ev::after{background:#0e8a6a}
+.calg button.sel{background:var(--blue);color:#fff;border-color:var(--blue)}
+.calg button.done{background:#f3fbd2;color:#4d7c0f;border-color:#dcef95}
+.calg button.done::after{background:#65a30d}
+.gc.act{border-color:var(--blue);box-shadow:0 0 0 2px #bfe3cc}
+.lu .av{background:#a9b9af}
+.lu.on .av,.lu em{background:transparent}
+.lu.on .av{background:var(--blue)}
+.lu em,.tk em{color:var(--blue)}
+#mg{background:linear-gradient(180deg,#f4f8f2,#e8efe6)}
+#mg .mgh h2{background:linear-gradient(90deg,#0b2e25,#0e8a6a);-webkit-background-clip:text;background-clip:text;color:transparent}
+#mg .mgf{background:rgba(255,255,255,.96)}
+/* perbaikan kontras */
+:root{--accent:#0b7a5a;--soft:#e2f2dd;--go:#1f9d63;--mut:#5c6e64}
+#app .pill{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff}
+#app .pill span{color:#fff}
+#app .sq{background:#f6faf4;border-color:transparent}
+#app #btnProfile{border:calc(4*var(--u)) solid var(--lime)}
+#app .income small{color:rgba(255,255,255,.72)}
+#app .sportbtn{background:var(--lime);color:var(--pitch)}
+#app .btn{--b1:#0e8a6a;--bs:#08574a;background:var(--b1);color:#fff;box-shadow:0 calc(5*var(--u)) 0 var(--bs)!important}
+#app .btn:active{background:var(--b1);filter:brightness(.92);transform:translateY(calc(3*var(--u)));box-shadow:0 calc(2*var(--u)) 0 var(--bs)!important}
+#app .btn .p{background:rgba(255,255,255,.22);color:#fff}
+#app .playbig{--b1:#1f9d63;--bs:#17703f}
+#app .btn.green{--b1:#2eb85c;--bs:#1b7f3f}
+#app .btn.gold,#app .playbig.gold{--b1:#f5b301;--bs:#a06a00;color:#2b1d00}
+#app .btn.gold .p{background:rgba(0,0,0,.12);color:#2b1d00}
+#app .btn.purple{--b1:#7c3aed;--bs:#5b21b6}
+#app .btn.grey{--b1:#e2f2dd;--bs:#bcd6b5;color:#0b5a43}
+#app .btn.grey .p{background:rgba(11,90,67,.12);color:#0b5a43}
+#app .btn.dis,#app .btn:disabled,#app .card .btn.dis,#app .gyb .btn.dis,#app .gyb .btn.dis.gold,#app .playbig:disabled{--b1:#e1e8e2;--bs:#c3cfc6;background:#e1e8e2;color:#52655b;opacity:1}
+#app .btn.dis .p,#app .btn:disabled .p,#app .gyb .btn.dis small{background:#cfdad1;color:#52655b}
+#app .hero{background:linear-gradient(160deg,#14473a,#0a241c)}
+.hbar i{background:var(--lime)}
+.tile span,.lusheet .cnt{color:var(--accent)}
+.lusheet .cnt{background:var(--soft)}
+.ck{background:var(--accent)}
+.lusheet .lu.on{border-color:var(--accent);background:#eef8ee}
+#app .tk.on,#app .pp.on,#app .opt.sel,#app .lu.on{background:#eef8ee}
+#app .card,#app .row,#app .pc,#app .tile,#app .stat,#app .sched,#app .gymrow{box-shadow:var(--sh)}
+#app .chips{background:#e2ebe0}
+#app .chip{color:#4f6257}
 </style>
 </head>
 <body>
@@ -620,7 +803,8 @@ function coachCost(c){return Math.round(c.base*Math.pow(2.2,cl(c.id))*Math.pow(1
 function coachHTML(){var h='<div class="h2x">Staf pelatih</div>';COACH.forEach(function(c){var l=cl(c.id);h+=oRow(c.col,c.ic,c.n+' · Lv '+l+'/5',l?c.e(l)+(l<5?' → '+c.e(l+1):''):'Belum direkrut · '+c.e(1),l>=5?'<span class="tag">MAX</span>':costBtn('green',l?'Naik':'Rekrut',coachCost(c),'coach',c.id))});return h}
 var SEASON_N=8,QUAL={basket:15,marathon:40,football:15,racing:40};
 function capAll(){return INC_CAP*(Math.pow(2,state.sports.basket.league)+Math.pow(2,state.sports.marathon.league)+Math.pow(2,state.sports.football.league)+Math.pow(2,state.sports.racing.league))}
-var ECO_PRIZE=.3;
+var ECO_PRIZE=.3,MK_CAP_K=.8;
+function mkCapPS(){return Math.max(prizeBase('basket'),prizeBase('marathon'),prizeBase('football'),prizeBase('racing'))*MK_CAP_K}
 var HIRE0=HIRE.slice(),PBASE0=PBASE.slice(),CARP0=null,ECO_K=1;
 function ecoK(){var w=Math.max(state.cash||0,state.totalEarned||0,state.wp||0);if(w>(state.wp||0))state.wp=w;
   var k=Math.max(1,Math.pow(w/5e5,.5));
@@ -974,10 +1158,11 @@ function mkCap(){return 400*(1+maxLeague())}
 function mkUpCost(p){return Math.round(mkType(p).cost*mkS()*120*Math.pow(1.7,p.lv-1))}
 function mkRate(p){var T=mkType(p),pf=clamp(Math.pow(1/PMS[p.pm],1.6),0,2.5);
   return Math.pow(Math.max(0,state.office.fans)+20,.8)*.0012*T.dem*(1+.2*(p.lv-1))*pf*(1+.08*Math.min(6,state.stats.streak))*repEcon()*(1+.06*bl('stad'))*mkTrend(p)}
-function mkRevPS(){var t=0;state.mk.prods.forEach(function(p){if(p.stock>=1)t+=mkRate(p)*mkPrice(p)});return Math.min(t,capAll()*.12)}
+function mkRevPS(){var t=0;state.mk.prods.forEach(function(p){if(p.stock>=1)t+=mkRate(p)*mkPrice(p)});return Math.min(t,mkCapPS())}
 function mkBatch(p,f){return Math.max(0,Math.min(Math.floor(mkCap()*f),Math.floor(mkCap()-p.stock)))}
 function mkTick(dt){var M=state.mk,tot=0;if(!M||!M.prods.length||!(dt>0))return 0;
-  while(dt>0){var d=Math.min(dt,10),cp=capAll()*.12,rv=0;dt-=d;
+  var cp=mkCapPS();
+  while(dt>0){var d=Math.min(dt,10),rv=0;dt-=d;
     M.prods.forEach(function(p){if(p.stock>=1)rv+=mkRate(p)*mkPrice(p)});var f=rv>cp?cp/rv:1;
     M.prods.forEach(function(p){var cap=mkCap(),uc=mkUnit(p);if(p.promo>0)p.promo=Math.max(0,p.promo-d);
       if(p.auto&&p.stock<Math.max(1,cap*.1)){var n=Math.min(Math.floor(cap*.3),Math.floor(state.cash/uc));if(n>=1){state.cash-=n*uc;p.stock+=n}}
@@ -2556,7 +2741,7 @@ $('#ov').addEventListener('click',function(e){
 /* ---------- loop ---------- */
 var lastF=performance.now(),acc=0;
 function away(real){
-  var sec=Math.min(real,7200),amt=0;invTick(sec,false);var mkA=mkTick(sec*.35);
+  var sec=Math.min(real,7200),amt=0;for(var r=sec;r>0;r-=60)invTick(Math.min(60,r),true);var mkA=mkTick(sec*.35);
   if(sec>=30&&mkA>=1)openModal('<h2>Selamat datang kembali!</h2><p class="sub">Fans terus berbelanja selama kamu pergi ('+mmss(sec).replace(/^00:/,'0:')+' menit).</p><div class="bigmoney">+'+money(amt+mkA)+'</div><button class="close" data-close="1">Ambil</button>');
 }
 function step(dt){
@@ -2625,7 +2810,11 @@ function mgPanel(){var M=state.mgr;if(!M)return;mgMig(M);var c=M.club,r=mgReq(c,
   '<div class="mgc"><div class="mgt"><b>Target periode ini</b><span>laga '+P.n+'/8</span></div>'+
   mgGoal('Menang min. '+r.win,P.w+' menang',P.w>=r.win)+mgGoal('Kas ≥ '+Math.round(r.fin*100)+'% awal',money(state.cash)+' / '+money(Math.round(P.c0*r.fin)),state.cash>=P.c0*r.fin)+mgGoal('Fans naik min. '+r.g,(fd>=0?'+':'')+fmt(fd),fd>=r.g)+'</div>';
   if(M.hist.length){h+='<div class="mgc"><div class="mgt"><b>Riwayat karier</b></div>';M.hist.forEach(function(x){h+=mgRow(esc(x.n)+' ★'+x.t,x.r||'Dipecat')});h+='</div>'}
-  mgShow(h,mgBtn('Tutup','x'))}
+  mgShow(h,(!M.exp&&rem>0?mgBtn('Tinggalkan club','lv','gold'):'')+mgBtn('Tutup','x'))}
+function mgLeavePen(M){return clamp(Math.round(4+Math.max(0,M.cl-M.cp)*.6),4,15)}
+function mgLeaveAsk(){var M=state.mgr;if(!M||M.fired||M.exp)return;var pn=mgLeavePen(M),r0=Math.round(repGet()),r1=Math.round(clamp(repGet()-pn,0,100));
+  mgShow('<div class="mgh"><h2>Tinggalkan '+esc(M.club.n)+'?</h2></div><div class="mgc">'+mgRow('Sisa kontrak',Math.max(0,M.cl-M.cp)+' laga')+mgRow('Reputasi manajer',r0+' → '+r1+' (−'+pn+')',false)+'</div>',mgBtn('Batal','lvb','grey')+mgBtn('Tinggalkan','lvy','gold'))}
+function mgLeave(){var M=state.mgr;if(!M||M.fired||M.exp)return;var pn=mgLeavePen(M);M.fired=1;M.lft=1;repAdd(-pn);M.hist.unshift({n:M.club.n,t:M.club.tier,r:'Hengkang'});M.hist.length=Math.min(M.hist.length,8);mgList=M.offers=mgOffers();sfx('lose');save();mgPicker('Kamu meninggalkan '+M.club.n,'Reputasimu turun '+pn+'. Tawaran klub menyesuaikan.')}
 function mgFire(why){var M=state.mgr;if(!M||M.fired)return;M.fired=1;repAdd(-8);M.hist.unshift({n:M.club.n,t:M.club.tier});M.hist.length=Math.min(M.hist.length,8);mgList=M.offers=mgOffers();sfx('lose');save();mgPicker('Kamu dipecat dari '+M.club.n,why+'. Reputasimu turun, tawaran klub menyesuaikan.')}
 function mgEval(){var M=state.mgr;if(!M||M.fired)return;var P=M.per,r=mgReq(M.club,M.ev),aw=P.w>=r.win,af=state.cash>=P.c0*r.fin,aq=state.office.fans-(P.f0==null?state.office.fans:P.f0)>=r.g,d=(aw?8:-12)+(af?4:-8)+(aq?4:-6);
   M.trust=clamp(M.trust+d,0,100);M.club.rep=clamp(M.club.rep+(aw?3:-4),0,100);repAdd(aw&&af&&aq?3:(aw||af||aq)?0:-3);
@@ -2655,14 +2844,14 @@ function mgAsk(){var M=state.mgr;if(!M||M.fired||M.xo||M.xno)return mgExpire();
 function mgAccept(){var M=state.mgr;if(!M||!M.xo)return;M.cl=M.xo;M.cp=0;M.cw=0;M.exp=0;M.xo=0;M.xno=0;M.sw=0;save();mgHide();toast('Kontrak diperpanjang '+M.cl+' laga')}
 function mgSwitch(){var M=state.mgr;if(!M||!M.exp)return;M.sw=1;if(!M.offers)M.offers=mgOffers();save();mgExpire()}
 function mgBack(){var M=state.mgr;if(!M||M.xno)return;M.sw=0;save();mgExpire()}
-mgEl.onclick=function(e){var k=e.target.closest('[data-mgs]');if(k){mgSel=+k.dataset.mgs;mgEl.querySelectorAll('.mgk').forEach(function(x){x.classList.toggle('on',x===k)});var ok=mgEl.querySelector('[data-mg="ok"]');if(ok){ok.disabled=false;ok.className='btn green';ok.textContent='Tanda tangan · '+mgList[mgSel].n}return}var b=e.target.closest('[data-mg]');if(!b)return;var a=b.dataset.mg;if(a==='x')mgHide();else if(a==='exp')mgExpire();else if(a==='ask')mgAsk();else if(a==='xa')mgAccept();else if(a==='xc')mgSwitch();else if(a==='xb')mgBack();else if(a==='ok'){if(mgSel>=0)mgStart(mgSel)}};
+mgEl.onclick=function(e){var k=e.target.closest('[data-mgs]');if(k){mgSel=+k.dataset.mgs;mgEl.querySelectorAll('.mgk').forEach(function(x){x.classList.toggle('on',x===k)});var ok=mgEl.querySelector('[data-mg="ok"]');if(ok){ok.disabled=false;ok.className='btn green';ok.textContent='Tanda tangan · '+mgList[mgSel].n}return}var b=e.target.closest('[data-mg]');if(!b)return;var a=b.dataset.mg;if(a==='x')mgHide();else if(a==='exp')mgExpire();else if(a==='ask')mgAsk();else if(a==='xa')mgAccept();else if(a==='xc')mgSwitch();else if(a==='xb')mgBack();else if(a==='lv')mgLeaveAsk();else if(a==='lvb')mgPanel();else if(a==='lvy')mgLeave();else if(a==='ok'){if(mgSel>=0)mgStart(mgSel)}};
 $('#btnClub').onclick=function(){if(state.mgr&&!state.mgr.fired)mgPanel()};
 var _ar=applyResult;applyResult=function(sid,res){var r=_ar(sid,res);try{mgAfter(sid,res)}catch(e){}return r};
 function mgAfter(sid,res){var M=state.mgr;if(!M||M.fired||M.exp)return;mgMig(M);var T=M.club.tier,P=M.per,w=isRace(sid)?res.place<=3:!!res.win,dr=!!res.draw;
   P.n++;M.cp++;if(w){P.w++;M.cw++}M.trust=clamp(M.trust+(w?2:dr?0:-(2+T*.5)),0,100);M.club.rep=clamp(M.club.rep+(w?1:dr?0:-1),0,100);
   if(M.cp>=M.cl)M.exp=1;
   if(M.trust<=0)setTimeout(function(){mgFire('Kepercayaan dewan habis')},2600);else if(P.n>=8)setTimeout(mgEval,2600);else if(M.exp)setTimeout(mgExpire,2600);save()}
-if(!state.mgr||state.mgr.fired){mgList=state.mgr?state.mgr.offers:mgOffers();mgPicker(state.mgr?'Kamu dipecat dari '+state.mgr.club.n:'Selamat datang, Manajer','Pilih salah satu dari 5 klub yang menawarimu kontrak')}else if(state.mgr.exp)mgExpire();
+if(!state.mgr||state.mgr.fired){mgList=state.mgr?state.mgr.offers:mgOffers();mgPicker(state.mgr?(state.mgr.lft?'Kamu meninggalkan ':'Kamu dipecat dari ')+state.mgr.club.n:'Selamat datang, Manajer','Pilih salah satu dari 5 klub yang menawarimu kontrak')}else if(state.mgr.exp)mgExpire();
 /* polish: ripple + animasi pindah tab */
 document.addEventListener('pointerdown',function(e){var b=e.target.closest('.btn,.chip,.opt');if(!b)return;var r=b.getBoundingClientRect(),d=Math.max(r.width,r.height)/2,s=document.createElement('span');s.className='rip';s.style.cssText='width:'+d+'px;height:'+d+'px;left:'+(e.clientX-r.left-d/2)+'px;top:'+(e.clientY-r.top-d/2)+'px';b.appendChild(s);setTimeout(function(){s.remove()},620)});
 $('#nav').addEventListener('click',function(){var v=$('#view');v.classList.remove('tabin');void v.offsetWidth;v.classList.add('tabin');setTimeout(function(){v.classList.remove('tabin')},800)});
