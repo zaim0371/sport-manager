@@ -367,6 +367,22 @@ button:focus-visible,[role=button]:focus-visible,input:focus-visible{outline:3px
 .pkt span{display:block;font-size:calc(28*var(--u));font-weight:700;opacity:.85;margin-top:calc(4*var(--u))}
 .pkt em{display:inline-block;font-style:normal;font-size:calc(24*var(--u));font-weight:800;background:rgba(255,255,255,.2);border-radius:calc(14*var(--u));padding:calc(5*var(--u)) calc(16*var(--u));margin-top:calc(10*var(--u))}
 .pkg{background:#fff;border-radius:calc(22*var(--u));padding:calc(18*var(--u)) calc(26*var(--u));font-size:calc(28*var(--u));font-weight:900;flex:none}
+.lk{filter:grayscale(1);opacity:.62}
+.lkic{width:1em;height:1em;vertical-align:-.13em;margin-right:.3em;flex:none}
+.pk.lk .pkg,.skr.lk .skrc{background:#e5e8ef;color:#6b7690!important}
+.mgsp{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.mgsp span{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:800;border-radius:999px;padding:5px 10px;background:#e8f7ee;color:#15803d}
+.mgsp span.off{background:#eef0f5;color:#8a93a6}
+.mgsp svg{width:14px;height:14px;margin:0}
+.mgmode{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.mgm{border:2px solid var(--line);background:#fff;border-radius:14px;padding:10px 4px;font-weight:800;font-size:13px;color:#4b5568}
+.mgm.on{border-color:var(--blue);background:#f0f6ff;color:var(--blue)}
+.mgm:disabled{opacity:.4}
+.mgsel{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:2px solid var(--line);background:#fff;border-radius:14px;padding:10px 12px;margin-top:8px;font-weight:800;font-size:14px;color:#1f2937}
+.mgsel.on{border-color:var(--blue);background:#f0f6ff}
+.mgsel.off{opacity:.5}
+.mgsel svg{width:22px;height:22px;flex:none}
+.mgsel small{margin-left:auto;font-weight:700;color:#6b7690;font-size:12px;display:inline-flex;align-items:center}
 /* Latih: grid 2 kolom */
 .tlg{display:grid;grid-template-columns:1fr 1fr;gap:calc(22*var(--u))}
 .trt{display:flex;flex-direction:column;align-items:flex-start;gap:calc(6*var(--u));text-align:left;background:#fff;border:2px solid var(--line);border-radius:calc(34*var(--u));padding:calc(26*var(--u));box-shadow:0 calc(6*var(--u)) 0 #dfe5ef;transition:transform .18s}
@@ -881,9 +897,9 @@ function hcPlay(sid,quiet){var H=hcGet(sid);if(!H||H.left<=0)return false;
 var hcT=0;
 function hcTick(now){if(now<hcT)return;hcT=now+2000;
   var O=state.office,H=O&&O.hc;if(!H||locked()||$('#ov').classList.contains('show'))return;
-  for(var i=0;i<SPL.length;i++){var sid=SPL[i],c=H[sid];if(!c||c.left<=0||!(c.next<=now))continue;c.next=now+HC_GAP;if(hcPlay(sid))break}}
+  for(var i=0;i<SPL.length;i++){var sid=SPL[i],c=H[sid];if(!c||!spOpen(sid)||c.left<=0||!(c.next<=now))continue;c.next=now+HC_GAP;if(hcPlay(sid))break}}
 function hcAway(sec){var H=state.office&&state.office.hc;if(!H)return;var n=Math.min(10,Math.floor(sec*1000/HC_GAP));
-  SPL.forEach(function(sid){for(var k=0;k<n&&hcGet(sid);k++)if(!hcPlay(sid,true))break;var c=hcGet(sid);if(c)c.next=Date.now()+HC_GAP})}
+  SPL.forEach(function(sid){if(!spOpen(sid))return;for(var k=0;k<n&&hcGet(sid);k++)if(!hcPlay(sid,true))break;var c=hcGet(sid);if(c)c.next=Date.now()+HC_GAP})}
 function hcMigrate(){var O=state.office;if(!O||!O.coach)return;
   try{var base={fis:1200,tek:1800,tak:1800,mud:1400},tot=0;Object.keys(O.coach).forEach(function(k){for(var l=0;l<(O.coach[k]||0);l++)tot+=Math.round((base[k]||1500)*Math.pow(2.2,l)*Math.pow(1.8,maxLeague())*ecoK())});
     delete O.coach;if(tot>0){LGs('Pengembalian staf pelatih lama').cash+=tot;setTimeout(function(){toast('Staf pelatih lama dihapus · dana kembali '+money(tot))},1200)}}catch(e){delete O.coach}}
@@ -1944,7 +1960,8 @@ function renderPicker(){
   var p=tourBanner()+'<h2 style="margin:4px 2px 4px;font-size:20px;font-weight:900">Pilih Olahraga</h2>';
   SPL.forEach(function(id){
     var D0=SPORTS[id],S0=state.sports[id],c=SPC[id]||SPC.basket;
-    p+='<button class="pk" data-act="enter" data-id="'+id+'" style="background:linear-gradient(110deg,'+c[0]+','+c[1]+')"><div class="pki"><svg><use href="#'+D0.icon+'"/></svg></div><div class="pkt"><b>'+D0.name+'</b><span>'+D0.leagues[S0.league]+'</span><em>Power '+fmt(sportPower(id))+'</em></div><div class="pkg" style="color:'+c[0]+'">MAIN ▶</div></button>';
+    var LK0=!spOpen(id);
+    p+='<button class="pk'+(LK0?' lk':'')+'" data-act="enter" data-id="'+id+'" style="background:linear-gradient(110deg,'+c[0]+','+c[1]+')"><div class="pki"><svg><use href="#'+D0.icon+'"/></svg></div><div class="pkt"><b>'+D0.name+'</b><span>'+(LK0?'Terkunci · bukan cabor kontrakmu':D0.leagues[S0.league])+'</span>'+(LK0?'':'<em>Power '+fmt(sportPower(id))+'</em>')+'</div><div class="pkg" style="color:'+c[0]+'">'+(LK0?lki()+'Terkunci':'MAIN ▶')+'</div></button>';
   });
   view.innerHTML=p;
 }
@@ -1953,13 +1970,13 @@ function tsMenu(kind){
   var tr=kind==='train',p='<h2 style="margin:4px 2px 4px;font-size:20px;font-weight:900">'+(tr?'Latih · pilih olahraga':'Skuad · pilih olahraga')+'</h2>';
   p+=tr?'<div class="tlg">':'';
   SPL.forEach(function(id){
-    var D0=SPORTS[id],S0=state.sports[id],c=SPC[id]||SPC.basket,n=0,av='';
+    var D0=SPORTS[id],S0=state.sports[id],c=SPC[id]||SPC.basket,n=0,av='',LK0=!spOpen(id);
     S0.players.forEach(function(l,i){if(l>0){n++;if(n<=5)av+='<i style="background:'+PCOL[i%5]+'">'+D0.players[i].n.charAt(0)+'</i>'}});
     if(tr){
       var left=trLeft(id);
-      p+='<button class="trt" data-act="tsopen" data-id="'+id+'" style="--c:'+c[1]+'"><div class="trh" style="background:'+c[1]+'"><svg><use href="#'+D0.icon+'"/></svg></div><b>'+D0.name+'</b><span>'+D0.leagues[S0.league]+'</span><div class="trd">'+[0,1].map(function(k){return '<u'+(k<left?' class="on"':'')+'></u>'}).join('')+'<small>'+left+'/2 sesi gratis</small></div></button>';
+      p+='<button class="trt'+(LK0?' lk':'')+'" data-act="tsopen" data-id="'+id+'" style="--c:'+c[1]+'"><div class="trh" style="background:'+c[1]+'"><svg><use href="#'+D0.icon+'"/></svg></div><b>'+(LK0?lki():'')+D0.name+'</b><span>'+(LK0?'Terkunci':D0.leagues[S0.league])+'</span><div class="trd">'+[0,1].map(function(k){return '<u'+(k<left?' class="on"':'')+'></u>'}).join('')+'<small>'+(LK0?'bukan cabor kontrakmu':left+'/2 sesi gratis')+'</small></div></button>';
     }else{
-      p+='<button class="skr" data-act="tsopen" data-id="'+id+'" style="--c:'+c[1]+'"><div class="skri"><svg><use href="#'+D0.icon+'"/></svg></div><div class="skrt"><b>'+D0.name+'</b><span>'+n+' atlet · Power +'+fmt(squadPower(id))+'</span><div class="skra">'+av+'</div></div><div class="skrc">›</div></button>';
+      p+='<button class="skr'+(LK0?' lk':'')+'" data-act="tsopen" data-id="'+id+'" style="--c:'+c[1]+'"><div class="skri"><svg><use href="#'+D0.icon+'"/></svg></div><div class="skrt"><b>'+(LK0?lki():'')+D0.name+'</b><span>'+(LK0?'Terkunci · bukan cabor kontrakmu':n+' atlet · Power +'+fmt(squadPower(id)))+'</span><div class="skra">'+av+'</div></div><div class="skrc">'+(LK0?lki():'›')+'</div></button>';
     }
   });
   p+=tr?'</div>':'';
@@ -1978,7 +1995,7 @@ function gymRentCost(sid){return Math.max(8,Math.round(prizeBase(sid)*12))}
 function gymPub(sid){var g=gymGet(sid);return !g.own&&!(g.left>0)&&(state.cash||0)<gymRentCost(sid)}
 var GYM_BUY_MIN=10000000;
 function gymBuyCost(sid){var b=Math.max(GYM_BUY_MIN,Math.round(prizeBase(sid)*60000));return Math.round(Math.min(b*ecoK(),Math.max(GYM_BUY_MIN,(state.totalEarned||0)*.15)))}
-function gymMonthly(sid){return gymGet(sid).own?Math.round(gymBuyCost(sid)*.003):0}
+function gymMonthly(sid){return spOpen(sid)&&gymGet(sid).own?Math.round(gymBuyCost(sid)*.003):0}
 function gymPerMatch(sid){return gymGet(sid).own?Math.round(gymBuyCost(sid)*.0003):0}
 function gymMonthlyTotal(){var t=0;SPL.forEach(function(k){t+=gymMonthly(k)});return t}
 function gymName(sid){return ({basket:'GOR Latihan',marathon:'Lintasan Latihan',football:'Lapangan Latihan',racing:'Sirkuit Latihan'})[sid]||'Gedung Latihan'}
@@ -2128,7 +2145,7 @@ function xfIsShort(sid,n){return (xf().short||[]).indexOf(xfKey(sid,n))>=0}
 function xfIsListed(sid,n){var l=xf().listed;return !!(l&&l[sid]&&l[sid].indexOf(n)>=0)}
 function xfKeep(sid,old,nw){var keep=old.filter(function(o){return !o.sold&&!o.closed&&xfIsShort(sid,o.n)}),names={};keep.forEach(function(o){names[o.n]=1});return keep.concat(nw.filter(function(o){return !names[o.n]}))}
 function rrX(){if(tab==='office'&&offTab==='xfer')renderOffice();else if(tab==='shop')renderShop();else if(tab==='squad')renderSquad();refresh()}
-function goXfer(sid){if(sid)state.market.sport=sid;offTab='xfer';sbPage=false;setTab('office')}
+function goXfer(sid){if(sid&&spOpen(sid))state.market.sport=sid;offTab='xfer';sbPage=false;setTab('office')}
 
 function xfPlayerRow(sid,o,k){
   var sh=xfIsShort(sid,o.n);o.club=o.club||xfClub(sid);
@@ -2327,14 +2344,14 @@ function taxBase(){var F=finGet();return Math.max(0,state.totalEarned-F.t0-(F.mk
 function taxDue(){var b=taxBase(),r=taxRef(),lo=0,t=0,lg=.004*maxLeague();
   for(var i=0;i<TAX_BR.length;i++){var hi=TAX_BR[i][0]*r;if(b>lo&&TAX_BR[i][1]>0)t+=(Math.min(b,hi)-lo)*(TAX_BR[i][1]+lg);lo=hi}
   return Math.round(t)}
-function rentSum(){var F=finGet(),t=0;SPL.forEach(function(k){t+=F.rent[k]||0});return t}
+function rentSum(){var F=finGet(),t=0;SPL.forEach(function(k){if(spOpen(k))t+=F.rent[k]||0});return t}
 function finMatch(sid){inflStep();var F=finGet(),t=stadTier(sid);if(t>0)F.rent[sid]=(F.rent[sid]||0)+stadRent(sid,t);F.n++;var XX=xf();XX.mc=(XX.mc||0)+1;var xc=XX.mc%XW_CYC;setTimeout(function(){if(xc===0)toast('🟢 Jendela transfer dibuka · '+XW_OPEN+' laga');else if(xc===XW_OPEN)toast('🔴 Jendela transfer ditutup · buka lagi '+(XW_CYC-XW_OPEN)+' laga');else if(xc===XW_OPEN-1)toast('⏰ Deadline Day · laga terakhir jendela transfer')},5200);if(F.n===FIN_N-1){var be=billEst(),cs=Math.max(0,state.cash);if(be>cs)setTimeout(function(){toast('⚠️ Tagihan laga berikutnya ±'+money(be)+' · kas kurang '+money(be-cs))},5800)}if(F.n>=FIN_N)finBill()}
 function finBill(){var F=finGet(),paid=0,unpaid=0,late=[];
   function pay(a){a=Math.max(0,Math.round(a));var p=Math.min(Math.max(0,state.cash),a);LGs('Tagihan klub').cash-=p;paid+=p;unpaid+=a-p;return a-p}
   var inc=Math.max(0,state.totalEarned-F.t0),d0=F.debt;F.debt=0;if(d0>0)d0=Math.round(d0*1.02);
   var rent0=rentSum(),staff0=staffCost(),gym0=gymMonthlyTotal(),tax0=taxDue(),tot0=d0+rent0+staff0+gym0+tax0,capB=Math.round(inc*BILL_CAP),sc=tot0>capB&&tot0>0?capB/tot0:1;
   d0=Math.round(d0*sc);var dLeft=pay(d0);
-  var rent=Math.round(rent0*sc);SPL.forEach(function(k){var r=Math.round((F.rent[k]||0)*sc);if(r>0&&pay(r)>0){late.push(k);state.stad[k]=0}});
+  var rent=Math.round(rent0*sc);SPL.forEach(function(k){if(!spOpen(k))return;var r=Math.round((F.rent[k]||0)*sc);if(r>0&&pay(r)>0){late.push(k);state.stad[k]=0}});
   var staff=Math.round(staff0*sc);pay(staff);var gym=Math.round(gym0*sc);pay(gym);var tax=Math.round(tax0*sc);pay(tax);
   unpaid=relBail(unpaid);F.debt=unpaid;
   F.hist.unshift({paid:paid,rent:rent,staff:staff,gym:gym,tax:tax,debt:unpaid,d:new Date().toLocaleDateString('id-ID')});if(F.hist.length>4)F.hist.length=4;
@@ -2375,6 +2392,7 @@ function offKeu(){var F=finGet(),h=kjBar(),rs=rentSum(),sf=staffCost(),tx=taxDue
   b+=kvSec('Hiburan')+'<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:calc(10*var(--u)) 0"><span style="font-size:calc(30*var(--u));color:#5b667c;font-weight:600">Arena Taruhan</span><button class="btn sm purple" data-o="sbopen" style="width:auto"><span>Buka</span></button></div>';
   return h+kvBox(b)+'<div style="height:14px"></div>'}
 function wageTotal(sid){
+  if(!spOpen(sid))return 0;
   var S=state.sports[sid],t=0,lo=S.loan||{};
   S.players.forEach(function(l,i){if(!(l>0)||lo[i]||rentLeft(sid,i))return;t+=pstar(sid,i)*(.5+.5*l/maxLv(sid,i))});
   return Math.round(prizeBase(sid)*WAGE_K*t*pkF(sid)*PAYS[state.office.pay].w)}
@@ -2531,8 +2549,8 @@ function mkClaimHTML(){var M=state.mk,pd=(M&&M.pend)||0;return '<div class="pc m
 var offTab='home',offSport='basket',sbPage=false,scoutMode='pemain';
 function oRow(col,icon,title,sub,right,extra){
   return '<div class="row"><div class="av" style="background:'+col+'"><svg style="color:#fff"><use href="#'+icon+'"/></svg></div><div class="tx"><b>'+title+'</b><span>'+sub+'</span>'+(extra||'')+'</div>'+(right||'')+'</div>'}
-function oChips(items,cur,act){
-  return '<div class="chips sp2">'+items.map(function(t){return '<button class="chip'+(cur===t[0]?' on':'')+'" data-o="'+act+'" data-id="'+t[0]+'">'+t[1]+'</button>'}).join('')+'</div>'}
+function oChips(items,cur,act){var gk=act==='osport'||act==='xsport';
+  return '<div class="chips sp2">'+items.map(function(t){var lk=gk&&!spOpen(t[0]);return '<button class="chip'+(cur===t[0]?' on':'')+(lk?' lk':'')+'" data-o="'+act+'" data-id="'+t[0]+'">'+(lk?lki():'')+t[1]+'</button>'}).join('')+'</div>'}
 function costBtn(cls,label,cost,act,id){
   return '<button class="btn sm '+cls+'" data-o="'+act+'" data-id="'+id+'" data-cost="'+cost+'"><span>'+label+'</span><span class="p">'+money(cost)+'</span></button>'}
 
@@ -2582,7 +2600,7 @@ function offBld(){
       bar='<div class="bar"><i style="width:'+l/BMAX*100+'%"></i></div>'+(mx?'':'<span>Waktu '+durTxt(bldDur(b))+'</span>')}
     h+=oRow(b.col,b.icon,b.name,sub,btn,bar)});
   h+='<div class="h2x" style="margin-top:14px">Gedung olahraga</div>';
-  SPL.forEach(function(k){h+=gymRow(k)});
+  SPL.forEach(function(k){if(spOpen(k))h+=gymRow(k)});
   return h}
 function offInvest(){var O=state.office,h='';
   h+='<div class="h2x kjs" id="kj-invest">Investasi · <span class="ofv" id="invTot">'+money(invTotal())+'</span></div>';
@@ -2777,7 +2795,7 @@ function applyFriendly(sid,res){var n=m.fr,e=relOf(sid,n),win=!isRace(sid)?!!res
   var fd=m.fdate;state.fl=flList().filter(function(x){return !(x.sid===sid&&x.n===n&&x.date===fd)});
   sfx(win?'win':'lose');save();return {cash:0,gems:0,wage:0,fans:0,tix:0,fr:'Sinergi +'+g}}
 var flPick=null;
-function flGo(sid,k){if(locked()){toast('Selesaikan pertandingan yang berjalan dulu');return}state.sport=sid;entered=true;sched=null;m=idleMatch();sched={date:k};var F=flOn(sid,k);if(F)m.oppName=F.n;setTab('play');if(canPlay())tryStart()}
+function flGo(sid,k){if(locked()){toast('Selesaikan pertandingan yang berjalan dulu');return}if(!spOpen(sid)){spNote(sid);return}state.sport=sid;entered=true;sched=null;m=idleMatch();sched={date:k};var F=flOn(sid,k);if(F)m.oppName=F.n;setTab('play');if(canPlay())tryStart()}
 function flOpen(sid,n){var e=relOf(sid,n);if(!e||e.s!=='f')return;var d=new Date();flPick={sid:sid,n:n,sel:null,y:d.getFullYear(),m:d.getMonth()};flCal()}
 function flCal(){var Q=flPick,sid=Q.sid,e=relOf(sid,Q.n);if(!e){closeModal();return}
   var d=new Date(),cur=d.getFullYear()*12+d.getMonth(),idx=Q.y*12+Q.m,tk=todayKey(),nd=e.nd||{};
@@ -3002,7 +3020,7 @@ view.addEventListener('click',function(e){
   if(a==='relf'||a==='relr'||a==='relx'||a==='relfav'||a==='relgift'||a==='relfm'||a==='relsw'||a==='relpl'){relAct(a,b);return}
   if(a==='otab'){offTab=id;sbPage=false;renderOffice();view.scrollTop=0;refresh();return}
   if(a==='xtab'){xfTab=id;renderOffice();refresh();return}
-  if(a==='xsport'){state.market.sport=id;renderOffice();refresh();save();return}
+  if(a==='xsport'){if(!spOpen(id)){spNote(id);return}state.market.sport=id;renderOffice();refresh();save();return}
   if(a==='xfil'){if(id==='s')xfShort=!xfShort;else{xfShort=false;xfMin=+id}renderOffice();refresh();return}
   if(a==='xshort'){var xs0=state.market.sport,xo=(state.market.offers[xs0]||[])[+b.dataset.i];if(!xo)return;var XS=xf();XS.short=XS.short||[];var xk=xfKey(xs0,xo.n),xi=XS.short.indexOf(xk);if(xi>=0){XS.short.splice(xi,1);toast(xo.n+' dihapus dari pantauan')}else{XS.short.push(xk);toast('⭐ '+xo.n+' dipantau')}renderOffice();refresh();save();return}
   if(a==='xnego'){xnStart(+b.dataset.i);return}
@@ -3034,7 +3052,7 @@ view.addEventListener('click',function(e){
     if(am3>state.cash){toast('Uang belum cukup');return}
     var pk3=+id;mediaCheck(am3,state.cash);LGs('Pasang taruhan').cash-=am3;c3.bet={pick:pk3,amt:am3,odds:pk3?c3.ob:c3.oa};c3.ph='live';c3.t0=Date.now();toast('Taruhan '+money(am3)+' dipasang · x'+c3.bet.odds.toFixed(2));renderOffice();refresh();save();return}
   if(a==='smode'){scoutMode=id;renderOffice();refresh();return}
-  if(a==='osport'){offSport=id;renderOffice();refresh();return}
+  if(a==='osport'){if(!spOpen(id)){spNote(id);return}offSport=id;renderOffice();refresh();return}
   if(a==='stad'){if(locked()){toast('Terkunci saat pertandingan berlangsung');return}if(!gymGet(id).own){toast('Beli gedung dulu');return}finGet();var t9=stadTier(id),n9=clamp(t9+(+b.dataset.d),0,stadMax(id));if(n9===t9)return;state.stad[id]=n9;sfx('tap');toast(SPORTS[id].name+': '+STADN[id][n9]+(n9?' · sewa '+money(stadRent(id,n9))+'/laga':' · gratis'));renderOffice();refresh();save();return}
   if(a==='paydebt'){var F9=finGet(),p9=Math.min(state.cash,F9.debt);if(p9<=0){toast('Uang belum cukup');return}LGs('Cicil tunggakan').cash-=p9;F9.debt-=p9;toast(F9.debt>0?'Tunggakan dicicil '+money(p9):'Tunggakan lunas');renderOffice();refresh();save();return}
   if(a==='pay'){if(locked()){toast('Terkunci saat pertandingan berlangsung');return}O.pay=+id;renderOffice();refresh();save();return}
@@ -3072,7 +3090,7 @@ $('#ov').addEventListener('click',function(e){
   closeModal();if(tab==='office')renderOffice();refresh();save()});
 
 function syncMatch(){var el=$('.match');if(el)el.style.display=(entered&&tab==='play'&&m&&m.phase!=='idle')?'':'none'}
-function render(){syncMatch();({play:renderPlay,train:renderTrain,squad:renderSquad,shop:renderShop,office:renderOffice,market:renderMarket})[tab]();refresh()}
+function render(){spFix();syncMatch();({play:renderPlay,train:renderTrain,squad:renderSquad,shop:renderShop,office:renderOffice,market:renderMarket})[tab]();refresh()}
 function setTab(t){tab=t;mktOpen=false;carOpen=false;document.querySelectorAll('#nav button').forEach(function(b){b.classList.toggle('on',b.dataset.tab===t)});view.scrollTop=0;render()}
 $('#nav').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;if(b.dataset.tab==='office'&&tab!=='office'){offTab='home';sbPage=false}if(b.dataset.tab==='train'&&tab!=='train')trHome=true;if(b.dataset.tab==='squad'&&tab!=='squad')sqHome=true;setTab(b.dataset.tab)});
 
@@ -3097,7 +3115,7 @@ var resetArm=0;
 view.addEventListener('click',function(e){
   var b=e.target.closest('[data-act]');if(!b||b.disabled)return;
   var a=b.dataset.act,sid=((tab==='train'||tab==='squad')?state.tsport:state.sport),D=SPORTS[sid],S=state.sports[sid];
-  if(a==='enter'){enter(b.dataset.id);return}
+  if(a==='enter'){if(!spOpen(b.dataset.id)){spNote(b.dataset.id);return}enter(b.dataset.id);return}
   if(a==='leave'){if(locked()){toast('Pertandingan sedang berlangsung');return}leave();return}
   if(a==='bet'){if(locked())return;openBet();return}
   if(a==='tac'&&m&&m.phase==='play'){m.tac=+b.dataset.i;sfx('tap');liveHud();return}
@@ -3110,7 +3128,7 @@ view.addEventListener('click',function(e){
   if(a==='comp'){state.sports.racing.comp=+b.dataset.i;renderPlay();refresh();save();return}
   if(a==='ncomp'&&m&&m.phase==='play'&&m.type==='racing'){m.nextComp=+b.dataset.i;sfx('tap');liveHud();return}
   if(a==='order'&&m&&m.phase==='play'&&m.type==='racing'){m.order=m.order?0:1;sfx('tap');toast(m.order?'Perintah tim: rekan mendukungmu':'Perintah tim: bebas');liveHud();return}
-  if(a==='garage'){state.tsport='racing';sqHome=false;setTab('squad');return}
+  if(a==='garage'){if(!spOpen('racing')){spNote('racing');return}state.tsport='racing';sqHome=false;setTab('squad');return}
   if(a==='copen'){xfTab='mobil';goXfer('racing');return}
   if(a==='cclose'){carOpen=false;renderShop();view.scrollTop=0;refresh();return}
   if(a==='gdealer'){xfTab='mobil';goXfer('racing');return}
@@ -3122,9 +3140,9 @@ view.addEventListener('click',function(e){
   if(a==='servis'){var RS5=state.sports.racing,c5=RS5.cars[+b.dataset.i];if(!c5||carHp(c5)>=100)return;var sc5=servCost(c5);if(state.cash<sc5){toast('Uang belum cukup');return}LGs('Servis mobil').cash-=sc5;c5.hp=100;sfx('up');toast('Mobil diservis · kondisi 100%');renderSquad();refresh();save();return}
   if(a==='cuse'){state.sports.racing.car=+b.dataset.i;toast('Mobil diganti');renderSquad();refresh();save();return}
   if(a==='csell'){var RS3=state.sports.racing,k3=+b.dataset.i,c3=RS3.cars[k3];if(!c3)return;if(RS3.cars.length<=1||k3===RS3.car){toast('Mobil yang dipakai tidak bisa dijual');return}openModal('<h2>Jual '+esc(c3.n)+'?</h2><p class="sub">Kamu dapat '+money(carSell(c3))+'.</p><button class="btn green" data-carsellok="'+k3+'" style="justify-content:center;margin-bottom:8px">Ya, jual</button><button class="close" data-close="1">Batal</button>');return}
-  if(a==='tsopen'){state.tsport=b.dataset.id;trSel=-1;if(tab==='train')trHome=false;else sqHome=false;render();view.scrollTop=0;refresh();save();return}
+  if(a==='tsopen'){if(!spOpen(b.dataset.id)){spNote(b.dataset.id);return}state.tsport=b.dataset.id;trSel=-1;if(tab==='train')trHome=false;else sqHome=false;render();view.scrollTop=0;refresh();save();return}
   if(a==='tshome'){if(tab==='train')trHome=true;else sqHome=true;render();view.scrollTop=0;refresh();return}
-  if(a==='tsport'){state.tsport=b.dataset.id;trSel=-1;render();refresh();save();return}
+  if(a==='tsport'){if(!spOpen(b.dataset.id)){spNote(b.dataset.id);return}state.tsport=b.dataset.id;trSel=-1;render();refresh();save();return}
   if(a==='mopen'){goXfer();return}
   if(a==='trpick'){trSel=+b.dataset.i;renderTrain();refresh();return}
   if(a==='trst'){var ta=trPick[sid]||(trPick[sid]=[]),tx=ta.indexOf(b.dataset.id);
@@ -3264,7 +3282,7 @@ $('#ov').addEventListener('click',function(e){
   else if(t.dataset.msgo){closeModal();startMatch()}
   else if(t.dataset.calnav){var n=+t.dataset.calnav,x=calM.y*12+calM.m+n;calM={y:Math.floor(x/12),m:x%12};openCal(false)}
   else if(t.dataset.calday){calSel=t.dataset.calday;openCal(false)}
-  else if(t.dataset.pick){state.sport=t.dataset.pick;sched=null;m=idleMatch();closeModal();setTab(tab)}
+  else if(t.dataset.pick){if(!spOpen(t.dataset.pick)){spNote(t.dataset.pick);return}state.sport=t.dataset.pick;sched=null;m=idleMatch();closeModal();setTab(tab)}
 });
 
 /* ---------- loop ---------- */
@@ -3314,6 +3332,42 @@ window.addEventListener('beforeunload',save);
 document.addEventListener('freeze',save);
 setInterval(save,5000);
 
+/* ===== CABOR KONTRAK ===== */
+function mgSp(){var M=state.mgr;return M&&!M.fired&&M.sp&&M.sp.length?M.sp:null}
+function spOpen(sid){var s=mgSp();return !s||s.indexOf(sid)>=0}
+function spNote(sid){toast('🔒 '+SPORTS[sid].name+' terkunci · bukan cabor kontrakmu')}
+function lki(){return '<svg class="lkic"><use href="#i-lock"/></svg>'}
+function spNames(a){return a.map(function(id){return SPORTS[id].name}).join(' + ')}
+function spFix(){var s=mgSp();if(!s)return;
+  if(!spOpen(offSport))offSport=s[0];
+  if(state.market&&!spOpen(state.market.sport))state.market.sport=s[0];
+  if(!spOpen(state.tsport))state.tsport=s[0];
+  if(!spOpen(state.sport)){state.sport=s[0];if(entered&&!locked()){entered=false;m=null;sched=null}}}
+function mgPickSp(){var a=SPL.slice().sort(function(){return Math.random()-.5}).slice(0,Math.random()<.75?2:1);return a.sort(function(x,y){return SPL.indexOf(x)-SPL.indexOf(y)})}
+function mgSpChips(sp){sp=sp&&sp.length?sp:SPL;var h='<div class="mgsp">';
+  SPL.forEach(function(id){var on=sp.indexOf(id)>=0;h+='<span class="'+(on?'':'off')+'">'+(on?'<svg><use href="#'+SPORTS[id].icon+'"/></svg>':lki())+SPORTS[id].name+(on?'':' · terkunci')+'</span>'});
+  return h+'</div>'}
+function mgSpHTML(sp){sp=sp&&sp.length?sp:SPL;return '<div class="mgd2" style="margin:10px 0 0"><b>Cabor yang kamu latih ('+sp.length+' dari '+SPL.length+'):</b><br>Sisanya terkunci dan tidak bisa dikelola selama kontrak.</div>'+mgSpChips(sp)}
+var mgXs=null,mgXm='same';
+function mgXInit(M){if(!mgXs)mgXs=(M.sp||SPL).slice()}
+function mgXValid(M){var cur=M.sp||SPL;mgXInit(M);if(!mgXs.length)return false;if(mgXm==='add')return mgXs.length>cur.length;if(mgXm==='less')return mgXs.length<cur.length;return true}
+function mgXHTML(M){mgXInit(M);var cur=M.sp||SPL;
+  var h='<div class="mgc"><div class="mgt"><b>Jumlah cabor kontrak baru</b><span>Sekarang '+cur.length+'/'+SPL.length+'</span></div><div class="mgmode">'+
+  [['add','➕ Tambah',cur.length>=SPL.length],['less','➖ Kurangi',cur.length<=1],['same','🟰 Tetap',0]].map(function(x){return '<button class="mgm'+(mgXm===x[0]?' on':'')+'" data-mg="xm_'+x[0]+'"'+(x[2]?' disabled':'')+'>'+x[1]+'</button>'}).join('')+'</div>';
+  if(mgXm==='same')h+='<p class="mgd" style="margin:10px 0 0">Tetap melatih '+esc(spNames(cur))+'.</p>';
+  else{h+='<p class="mgd" style="margin:10px 0 0">'+(mgXm==='add'?'Pilih cabor terkunci yang mau dibuka.':'Pilih cabor yang mau dilepas (minimal 1 cabor tetap ada).')+'</p>';
+    SPL.forEach(function(id){var inCur=cur.indexOf(id)>=0,sel=mgXs.indexOf(id)>=0,can=mgXm==='add'?!inCur:inCur,on,st;
+      if(mgXm==='add'){on=sel&&!inCur;st=inCur?'Sudah dilatih':on?'Dibuka':lki()+'Terkunci'}
+      else{on=inCur&&!sel;st=!inCur?lki()+'Terkunci':on?'Dilepas':'Tetap'}
+      h+='<button class="mgsel'+(on?' on':'')+(can?'':' off')+'" data-mgp="'+id+'"'+(can?'':' disabled')+'><svg><use href="#'+SPORTS[id].icon+'"/></svg>'+SPORTS[id].name+'<small>'+st+'</small></button>'})}
+  h+='<p class="mgd" style="margin:10px 0 0"><b>Hasil:</b> '+esc(spNames(mgXs))+' ('+mgXs.length+' cabor)</p></div>';return h}
+function mgRe(){var b=mgEl.querySelector('.mgb'),y=b?b.scrollTop:0;mgExpire();var b2=mgEl.querySelector('.mgb');if(b2)b2.scrollTop=y}
+function mgXMode(x){var M=state.mgr;if(!M||!M.xo)return;mgXm=x;mgXs=(M.sp||SPL).slice();mgRe()}
+function mgXToggle(id){var M=state.mgr;if(!M||!M.xo)return;mgXInit(M);var cur=M.sp||SPL,i=mgXs.indexOf(id);
+  if(mgXm==='add'){if(cur.indexOf(id)>=0)return;if(i>=0)mgXs.splice(i,1);else mgXs.push(id)}
+  else if(mgXm==='less'){if(cur.indexOf(id)<0)return;if(i>=0){if(mgXs.length<=1){toast('Minimal 1 cabor harus tetap ada');return}mgXs.splice(i,1)}else mgXs.push(id)}
+  else return;
+  mgXs.sort(function(a,b){return SPL.indexOf(a)-SPL.indexOf(b)});mgRe()}
 /* ===== MODE MANAJER ===== */
 var MG_TIER=[{cash:50,fans:0,rep:25,min:0,win:3,fin:.8,g:8},{cash:400,fans:100,rep:40,min:15,win:4,fin:.9,g:35},{cash:3500,fans:1000,rep:55,min:30,win:5,fin:1,g:90},{cash:30000,fans:6000,rep:70,min:45,win:6,fin:1.1,g:250},{cash:250000,fans:20000,rep:85,min:60,win:7,fin:1.2,g:700}];
 var MG_POOL=[['Tunas Harapan','Persada Kota','Bintang Desa','Garuda Muda'],['Satria Utama','Cakra Mandala','Laskar Timur','Pelita Raya'],['Elang Perkasa','Nusantara United','Banteng Merah','Samudra City'],['Garuda Prima','Macan Kemayoran','Borneo Royal','Sriwijaya Raya'],['Jakarta Titans','Mahkota Raya','Imperial Nusantara','Phoenix Archipelago']];
@@ -3321,7 +3375,7 @@ var NT_POOL=[['Timor Leste','Laos','Brunei','Kamboja'],['Filipina','Myanmar','Si
 function mgPer(M){return M&&M.club&&M.club.nt?4:8}
 function mgNatOffers(n){var c=.5+repGet()/22,pool=[],out=[];
   NT_POOL.forEach(function(a,t){a.forEach(function(nm){pool.push({n:nm,tier:t+1,w:Math.exp(-Math.pow(t+1-c,2)/.9)*(.5+Math.random())})})});
-  while(out.length<n&&pool.length){var q=0;pool.forEach(function(x){q+=x.w});var r=Math.random()*q,k=0;for(;k<pool.length-1;k++){r-=pool[k].w;if(r<=0)break}var x=pool.splice(k,1)[0];out.push({n:'Timnas '+x.n,nt:1,tier:x.tier,rep:clamp(MG_TIER[x.tier-1].rep+Math.round(rnd(-5,5)),0,100),len:8+4*Math.floor(Math.random()*3)})}
+  while(out.length<n&&pool.length){var q=0;pool.forEach(function(x){q+=x.w});var r=Math.random()*q,k=0;for(;k<pool.length-1;k++){r-=pool[k].w;if(r<=0)break}var x=pool.splice(k,1)[0];out.push({n:'Timnas '+x.n,nt:1,sp:mgPickSp(),tier:x.tier,rep:clamp(MG_TIER[x.tier-1].rep+Math.round(rnd(-5,5)),0,100),len:8+4*Math.floor(Math.random()*3)})}
   return out}
 var mgList=[],mgEl=document.createElement('div');mgEl.id='mg';$('#app').appendChild(mgEl);
 function mgHide(){mgEl.style.display='none'}
@@ -3333,28 +3387,29 @@ var mgSel=-1
 function mgReq(c,ev){var T=MG_TIER[c.tier-1];var nt=c.nt;return {win:nt?Math.max(2,Math.round(T.win*.5)):T.win,fin:T.fin,g:Math.round((T.g+Math.round(T.g*.25*(ev||0)))*(nt?.6:1))}}
 function mgOffers(){var c=.5+repGet()/22,pool=[],out=[];
   MG_POOL.forEach(function(a,t){a.forEach(function(n){pool.push({n:n,tier:t+1,w:Math.exp(-Math.pow(t+1-c,2)/.9)*(.5+Math.random())})})});
-  var nn=repGet()>=30?2:0;while(out.length<(nn?4:5)){var s=0;pool.forEach(function(p){s+=p.w});var r=Math.random()*s,k=0;for(;k<pool.length-1;k++){r-=pool[k].w;if(r<=0)break}var p=pool.splice(k,1)[0];out.push({n:p.n,tier:p.tier,rep:clamp(MG_TIER[p.tier-1].rep+Math.round(rnd(-5,5)),0,100),len:5+Math.floor(Math.random()*16)})}
+  var nn=repGet()>=30?2:0;while(out.length<(nn?4:5)){var s=0;pool.forEach(function(p){s+=p.w});var r=Math.random()*s,k=0;for(;k<pool.length-1;k++){r-=pool[k].w;if(r<=0)break}var p=pool.splice(k,1)[0];out.push({n:p.n,tier:p.tier,sp:mgPickSp(),rep:clamp(MG_TIER[p.tier-1].rep+Math.round(rnd(-5,5)),0,100),len:5+Math.floor(Math.random()*16)})}
   return out.concat(mgNatOffers(nn)).sort(function(a,b){return b.tier-a.tier})}
-function mgPicker(title,why,back){var rn=repName(repGet());mgSel=-1;
+function mgPicker(title,why,back){var rn=repName(repGet());mgSel=-1;mgList.forEach(function(c){if(!c.sp||!c.sp.length)c.sp=mgPickSp()});
   var h='<div class="mgh"><h2>'+esc(title)+'</h2>'+(why?'<p class="bad">'+esc(why)+'</p>':'')+'</div><div class="mgrep"><span>Reputasi manajermu</span><b style="color:'+rn[1]+'">'+rn[0]+' · '+Math.round(repGet())+'</b></div>';
   mgList.forEach(function(c,i){var T=MG_TIER[c.tier-1],r=mgReq(c,0);
     h+='<div class="mgc mgk" data-mgs="'+i+'"><div class="mgt"><div class="mgn"><i class="mgck"></i><b>'+(c.nt?'🌍 ':'')+esc(c.n)+'</b></div>'+starsHTML(c.tier)+'</div>'+
     '<div class="mgxs" style="--n:4">'+mgTile('Kontrak',(c.len||20)+' laga','hl')+mgTile(c.nt?'Dana federasi':'Kas',money(T.cash))+mgTile('Fans',fmt(T.fans))+mgTile(c.nt?'Rep timnas':'Rep club',c.rep)+'</div>'+
-    '<div class="mgd2"><b>Target tiap '+mgPer({club:c})+' laga:</b> menang ≥ '+r.win+(c.nt?'':' · kas ≥ '+Math.round(r.fin*100)+'%')+' · fans +'+r.g+(c.nt?'<br>Keuangan ditanggung federasi · reputasi naik lebih besar kalau sukses':'')+'<br><b>Min. reputasi manajer:</b> '+T.min+'</div></div>'});
+    mgSpHTML(c.sp)+'<div class="mgd2"><b>Target tiap '+mgPer({club:c})+' laga:</b> menang ≥ '+r.win+(c.nt?'':' · kas ≥ '+Math.round(r.fin*100)+'%')+' · fans +'+r.g+(c.nt?'<br>Keuangan ditanggung federasi · reputasi naik lebih besar kalau sukses':'')+'<br><b>Min. reputasi manajer:</b> '+T.min+'</div></div>'});
   mgShow(h,(back?mgBtn('Kembali','xb','grey'):'')+mgBtn('Pilih club dulu','ok','',1))}
 function mgStart(i){var c=mgList[i],T=MG_TIER[c.tier-1],M=state.mgr,keep={name:state.name,mute:state.mute,rep:repGet(),hist:(M&&M.hist)||[]};
   if(M&&!M.fired&&M.exp)keep.hist=[{n:M.club.n,t:M.club.tier,r:'Kontrak habis'}].concat(keep.hist).slice(0,8);
   state=DEF();state.name=keep.name;state.mute=keep.mute;state.office.rep=keep.rep;
-  SPL.forEach(function(sid){var S=state.sports[sid];S.league=Math.min(c.tier-1,SPORTS[sid].leagues.length-1);S.players=S.players.map(function(_,k){return Math.min(maxLv(sid,k)||99,1+2*(c.tier-1))})});
+  SPL.forEach(function(sid){var S=state.sports[sid];S.league=0;S.players=S.players.map(function(_,k){return Math.min(maxLv(sid,k)||99,1+2*(c.tier-1))})});
   state.cash=T.cash;state.office.fans=T.fans;
-  state.mgr={club:{n:c.n,tier:c.tier,rep:c.rep,nt:c.nt?1:0},trust:60,per:{n:0,w:0,c0:T.cash,f0:T.fans},ev:0,hist:keep.hist,cl:c.len||20,cp:0,cw:0};
+  state.mgr={club:{n:c.n,tier:c.tier,rep:c.rep,nt:c.nt?1:0},trust:60,per:{n:0,w:0,c0:T.cash,f0:T.fans},ev:0,hist:keep.hist,cl:c.len||20,cp:0,cw:0,sp:(c.sp&&c.sp.length?c.sp.slice():mgPickSp())};
   if(c.nt){var own=c.n.replace('Timnas ','');state.mgr.opp=WORLD.filter(function(n){return n!==own}).sort(function(){return Math.random()-.5}).slice(0,8)}
-  mgApplyMode();syncRoster(state);ensureMarket();leave();save();mgHide();toast('Kontrak '+(c.len||20)+' laga bersama '+c.n+' dimulai')}
+  mgXs=null;mgXm='same';mgApplyMode();syncRoster(state);ensureMarket();spFix();leave();save();mgHide();toast('Kontrak '+(c.len||20)+' laga bersama '+c.n+' · cabor: '+spNames(state.mgr.sp))}
 function mgRow(l,v,ok){return '<div class="mgr"><span>'+l+'</span><b'+(ok===undefined?'':' class="'+(ok?'ok':'bad')+'"')+'>'+v+'</b></div>'}
 function mgPanel(){var M=state.mgr;if(!M)return;mgMig(M);var c=M.club,r=mgReq(c,M.ev),P=M.per,rn=repName(repGet()),cr=repName(c.rep),wg=0;SPL.forEach(function(s){wg+=wageTotal(s)});
   if(P.f0==null)P.f0=state.office.fans;var fd=state.office.fans-P.f0,rem=Math.max(0,M.cl-M.cp);
   var h='<div class="mgh"><h2>'+esc(c.n)+' '+starsHTML(c.tier)+'</h2><p>'+(c.nt?'Kamu pelatih tim nasional. Federasi menilai tiap 4 laga; dana ditanggung federasi, tapi hasil dan fans yang dinilai.':'Kamu manajer, bukan pemilik club. Dewan menilai tiap 8 laga; presiden bisa memperpanjang kontrak atau memecatmu.')+'</p></div>'+
   '<div class="mgc"><div class="mgt"><b>Kontrak</b><span>'+M.cp+' / '+M.cl+' laga</span></div><div class="bar"><i style="width:'+Math.min(100,M.cp/M.cl*100)+'%;background:#16a34a"></i></div><div class="mgxs" style="margin-top:10px">'+mgTile('Sisa',rem+' laga','hl')+mgTile('Menang',M.cw)+mgTile('Periode',P.n+'/'+mgPer(M))+'</div></div>'+
+  '<div class="mgc"><div class="mgt"><b>Cabor kontrak</b><span>'+(mgSp()||SPL).length+'/'+SPL.length+'</span></div>'+mgSpChips(M.sp)+'</div>'+
   '<div class="mgc"><div class="mgt"><b>Kepercayaan dewan</b><b>'+Math.round(M.trust)+'%</b></div><div class="bar"><i style="width:'+M.trust+'%;background:'+(M.trust<35?'#ef4444':'#3b82f6')+'"></i></div>'+
   mgRow('Reputasi manajer','<span style="color:'+rn[1]+'">'+rn[0]+' ('+Math.round(repGet())+')</span>')+mgRow('Reputasi club','<span style="color:'+cr[1]+'">'+cr[0]+' ('+Math.round(c.rep)+')</span>')+'</div>'+
   '<div class="mgc"><div class="mgt"><b>Keuangan club</b></div><div class="mgxs" style="--n:2">'+mgTile('Kas',money(state.cash))+mgTile('Penjualan /dtk',money(mkRevPS()))+mgTile('Gaji /laga',money(wg))+mgTile('Fans',fmt(state.office.fans))+'</div></div>'+
@@ -3383,7 +3438,7 @@ function mgExpire(){var M=state.mgr;if(!M||M.fired)return;mgMig(M);
   var h='<div class="mgh"><h2>Kontrak habis</h2><p>Kontrakmu bersama '+esc(M.club.n)+' selesai. '+(M.xo?'Presiden menawarkan perpanjangan. Terima, atau pindah club.':M.xno?'Permintaan perpanjangan ditolak.':'Minta perpanjangan ke presiden atau pindah club.')+'</p></div>'+
   '<div class="mgc"><div class="mgxs">'+mgTile('Laga',M.cp)+mgTile('Menang',M.cw)+mgTile('Dewan',Math.round(M.trust)+'%')+'</div></div>',f;
   if(M.xo){h+='<div class="mgc"><div class="mgt"><b>Presiden setuju</b><span>Tawaran perpanjangan</span></div><div class="mgxs" style="--n:1">'+mgTile('Durasi baru',M.xo+' laga','hl')+'</div></div>';
-    f=mgBtn('Pindah club','xc','grey')+mgBtn('Terima '+M.xo+' laga','xa','green')}
+    h+=mgXHTML(M);f=mgBtn('Pindah club','xc','grey')+mgBtn('Terima '+M.xo+' laga · '+mgXs.length+' cabor','xa','green',!mgXValid(M))}
   else if(M.xno){h+='<div class="mgc"><div class="mgt"><b>Presiden menolak</b></div><p class="mgd bad" style="margin:0">Presiden tidak mau memperpanjang kontrakmu. Kamu harus mencari club baru.</p></div>';
     f=mgBtn('Cari club baru','xc')}
   else{var p=mgP(M);h+='<div class="mgc"><div class="mgt"><b>Peluang presiden setuju</b><b>'+p+'%</b></div><div class="bar"><i style="width:'+p+'%;background:#16a34a"></i></div><p class="mgd" style="margin:10px 0 0">Dihitung dari kepercayaan dewan dan rasio menangmu. Kalau ditolak, kamu harus pindah club.</p></div>';
@@ -3391,11 +3446,12 @@ function mgExpire(){var M=state.mgr;if(!M||M.fired)return;mgMig(M);
   mgShow(h,f)}
 function mgAsk(){var M=state.mgr;if(!M||M.fired||M.xo||M.xno)return mgExpire();
   if(Math.random()*100<mgP(M))M.xo=clamp(Math.round(6+M.trust/100*10+(Math.random()*4-2)),5,20);else M.xno=1;
-  sfx(M.xo?'win':'lose');save();mgExpire()}
-function mgAccept(){var M=state.mgr;if(!M||!M.xo)return;M.cl=M.xo;M.cp=0;M.cw=0;M.exp=0;M.xo=0;M.xno=0;M.sw=0;save();mgHide();toast('Kontrak diperpanjang '+M.cl+' laga')}
+  mgXs=null;mgXm='same';sfx(M.xo?'win':'lose');save();mgExpire()}
+function mgAccept(){var M=state.mgr;if(!M||!M.xo)return;var nsp=null;if(mgXs){if(!mgXValid(M))return;nsp=mgXs.slice()}
+  M.cl=M.xo;M.cp=0;M.cw=0;M.exp=0;M.xo=0;M.xno=0;M.sw=0;if(nsp)M.sp=nsp;mgXs=null;mgXm='same';spFix();save();mgHide();render();toast('Kontrak diperpanjang '+M.cl+' laga · cabor: '+spNames(M.sp||SPL))}
 function mgSwitch(){var M=state.mgr;if(!M||!M.exp)return;M.sw=1;if(!M.offers)M.offers=mgOffers();save();mgExpire()}
 function mgBack(){var M=state.mgr;if(!M||M.xno)return;M.sw=0;save();mgExpire()}
-mgEl.onclick=function(e){var k=e.target.closest('[data-mgs]');if(k){mgSel=+k.dataset.mgs;mgEl.querySelectorAll('.mgk').forEach(function(x){x.classList.toggle('on',x===k)});var ok=mgEl.querySelector('[data-mg="ok"]');if(ok){ok.disabled=false;ok.className='btn green';ok.textContent='Tanda tangan · '+mgList[mgSel].n}return}var b=e.target.closest('[data-mg]');if(!b)return;var a=b.dataset.mg;if(a==='x')mgHide();else if(a==='exp')mgExpire();else if(a==='ask')mgAsk();else if(a==='xa')mgAccept();else if(a==='xc')mgSwitch();else if(a==='xb')mgBack();else if(a==='lv')mgLeaveAsk();else if(a==='lvb')mgPanel();else if(a==='lvy')mgLeave();else if(a==='ok'){if(mgSel>=0)mgStart(mgSel)}};
+mgEl.onclick=function(e){var k=e.target.closest('[data-mgs]');if(k){mgSel=+k.dataset.mgs;mgEl.querySelectorAll('.mgk').forEach(function(x){x.classList.toggle('on',x===k)});var ok=mgEl.querySelector('[data-mg="ok"]');if(ok){ok.disabled=false;ok.className='btn green';ok.textContent='Tanda tangan · '+mgList[mgSel].n}return}var sp0=e.target.closest('[data-mgp]');if(sp0){mgXToggle(sp0.dataset.mgp);return}var b=e.target.closest('[data-mg]');if(!b)return;var a=b.dataset.mg;if(a.indexOf('xm_')===0){mgXMode(a.slice(3));return}if(a==='x')mgHide();else if(a==='exp')mgExpire();else if(a==='ask')mgAsk();else if(a==='xa')mgAccept();else if(a==='xc')mgSwitch();else if(a==='xb')mgBack();else if(a==='lv')mgLeaveAsk();else if(a==='lvb')mgPanel();else if(a==='lvy')mgLeave();else if(a==='ok'){if(mgSel>=0)mgStart(mgSel)}};
 $('#btnClub').onclick=function(){if(state.mgr&&!state.mgr.fired)mgPanel()};
 var _ar=applyResult;applyResult=function(sid,res){var r=_ar(sid,res);try{mgAfter(sid,res)}catch(e){}return r};
 function mgAfter(sid,res){var M=state.mgr;if(!M||M.fired||M.exp)return;mgMig(M);var T=M.club.tier,P=M.per,w=isRace(sid)?res.place<=3:!!res.win,dr=!!res.draw;
